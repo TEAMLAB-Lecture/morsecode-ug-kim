@@ -6,6 +6,7 @@ import morsecode as mc
 from mock import patch
 from io import StringIO
 
+
 class TestMorseCode(unittest.TestCase):
 
     def test_is_help_command(self):
@@ -29,8 +30,10 @@ class TestMorseCode(unittest.TestCase):
 
         self.assertTrue(mc.is_validated_english_sentence("Hello World!"))
         self.assertTrue(mc.is_validated_english_sentence("!X!"))
-        self.assertTrue(mc.is_validated_english_sentence("Testing started at "))
-        self.assertTrue(mc.is_validated_english_sentence("Process finished with exit code"))
+        self.assertTrue(mc.is_validated_english_sentence(
+            "Testing started at "))
+        self.assertTrue(mc.is_validated_english_sentence(
+            "Process finished with exit code"))
 
     def test_is_validated_morse_code(self):
         self.assertTrue(mc.is_validated_morse_code("-"))
@@ -81,14 +84,19 @@ class TestMorseCode(unittest.TestCase):
     def test_decoding_sentence(self):
         self.assertEqual(mc.decoding_sentence("... --- ..."), "SOS")
         self.assertEqual(mc.decoding_sentence(".... . .-.. .-.. ---"), "HELLO")
-        self.assertEqual(mc.decoding_sentence("--. .- -.-. .... --- -."), "GACHON")
+        self.assertEqual(mc.decoding_sentence(
+            "--. .- -.-. .... --- -."), "GACHON")
         self.assertEqual(mc.decoding_sentence(".. -- ."), "IME")
 
     def test_encoding_sentence(self):
-        self.assertEqual((mc.encoding_sentence("Sungchul    CHOI") ).strip(), "... ..- -. --. -.-. .... ..- .-..  -.-. .... --- ..")
-        self.assertEqual((mc.encoding_sentence("GACHON UNIV.!")).strip(), "--. .- -.-. .... --- -.  ..- -. .. ...-")
-        self.assertEqual((mc.encoding_sentence("HI! Fine Thank, you.")).strip(), ".... ..  ..-. .. -. .  - .... .- -. -.-  -.-- --- ..-")
-        self.assertEqual((mc.encoding_sentence("WHERE ARE YOU GOING?")).strip(), ".-- .... . .-. .  .- .-. .  -.-- --- ..-  --. --- .. -. --.")
+        self.assertEqual((mc.encoding_sentence("Sungchul    CHOI")).strip(
+        ), "... ..- -. --. -.-. .... ..- .-..  -.-. .... --- ..")
+        self.assertEqual((mc.encoding_sentence("GACHON UNIV.!")).strip(
+        ), "--. .- -.-. .... --- -.  ..- -. .. ...-")
+        self.assertEqual((mc.encoding_sentence("HI! Fine Thank, you.")).strip(
+        ), ".... ..  ..-. .. -. .  - .... .- -. -.-  -.-- --- ..-")
+        self.assertEqual((mc.encoding_sentence("WHERE ARE YOU GOING?")).strip(
+        ), ".-- .... . .-. .  .- .-. .  -.-- --- ..-  --. --- .. -. --.")
 
     def test_main(self):
         for x in range(50):
@@ -98,7 +106,8 @@ class TestMorseCode(unittest.TestCase):
                     console = fakeOutput.getvalue().strip().split("\n")
                     self.assertIn(console[1].upper(), "GOOD BYE")
 
-        input_list = ["woesds.l;", "_e_we", "12434cscs21", "545caacas", "--------", "0"]
+        input_list = ["woesds.l;", "_e_we",
+                      "12434cscs21", "545caacas", "--------", "0"]
         with patch('builtins.input', side_effect=input_list):
             with patch('sys.stdout', new=StringIO()) as fakeOutput:
                 mc.main()
@@ -118,16 +127,17 @@ class TestMorseCode(unittest.TestCase):
                 mc.main()
                 console = fakeOutput.getvalue().strip().split("\n")
                 self.assertIn(".... . .-.. .-.. ---", console[1].upper())
-                self.assertIn(".... ..  --. .- -.-. .... --- -.", console[2].upper())
+                self.assertIn(".... ..  --. .- -.-. .... --- -.",
+                              console[2].upper())
                 self.assertIn("WRONG", console[3].upper())
                 self.assertIn(".-- - ..-.", console[4].upper())
                 self.assertIn("GM", console[5].upper())
                 self.assertIn("GG GT T T TEEEE", console[6].upper())
                 self.assertIn("WRONG", console[7].upper())
 
-
     def get_cleaned_english_sentence(self, raw_english_sentence):
-        english_sentence = "".join([character for character in raw_english_sentence if character not in ".,!?"])
+        english_sentence = "".join(
+            [character for character in raw_english_sentence if character not in ".,!?"])
         return english_sentence
 
     def decoding_character(self, morse_character):
