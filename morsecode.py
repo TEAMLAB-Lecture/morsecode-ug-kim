@@ -89,13 +89,17 @@ def is_validated_english_sentence(user_input):
     if user_input == "":
         return False
 
-    numbers = []
-    for i in range(10):
-        numbers.append(str(i))
+    # map
+    # numbers = []
+    # for i in range(10):
+    #     numbers.append(str(i))
+    numbers = [str(i) for i in range(10)]
 
-    special = "_@#$%^&*()-+=[]{}';:\|`~" + '"'
+    # special = "_@#$%^&*()-+=[]{}';:\|`~" + '"'  # \
+    special = "_@#$%^&*()-+=[]{}\"';:\|`~"
     ends = ".,!?"
 
+    # set으로 교집합 확인
     for n in numbers:
         if n in user_input:
             return False
@@ -330,16 +334,12 @@ def main():
             break
         if is_help_command(user_input):
             get_help_message()
-            continue
-        if is_validated_english_sentence(user_input):
+        elif is_validated_english_sentence(user_input):
             print(encoding_sentence(user_input))
-            continue
         elif is_validated_morse_code(user_input):
             print(decoding_sentence(user_input))
-            continue
         else:
             print("Wrong Input")
-            continue
 
     # ==================================
     print("Good Bye")
